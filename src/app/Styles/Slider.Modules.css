@@ -1,0 +1,33 @@
+#sliderContainer{
+    position: relative;
+}
+#sliderImage{
+    width: 100%;
+}
+#slideView{
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+#slideText{
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 40%;
+    background-color: rgba(128, 128, 128, 0.575);
+    padding: 1rem 2rem;
+    color: white;
+}
+.slideArrow{
+    font-size: 45px !important;
+    color: white !important;
+    padding: .6rem .3rem;
+    -webkit-text-stroke: 1px black;
+    margin: 0 1rem;
+}
+.slideArrow:hover{
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.575);
+}

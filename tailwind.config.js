@@ -14,5 +14,14 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('flowbite/plugin'),
+  ],
+
+}
+module.exports = {
+  content: [
+    "./node_modules/flowbite/**/*.js"
+  ]
 }

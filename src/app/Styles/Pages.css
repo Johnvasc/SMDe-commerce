@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Ephesis&family=Oswald:wght@300;600&family=Roboto+Slab:wght@400;500&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Ephesis&family=Oswald:wght@300;600&family=Roboto+Slab:wght@400;500&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Mooli&display=swap');
+*{
+    font-family: 'Mooli', sans-serif;
+}
+
+body{
+    margin: 0px;
+    padding: 0px;
+}
+button:hover{
+    cursor: pointer;
+}
+.centralize{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.centralizeCol{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.padding3h{
+    padding: 0 3rem;
+}
+.line{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.lineLeft{
+    display: flex;
+    align-items: center;
+    justify-content: initial;
+}
+.filter{
+    font-size: 24px;
+    margin: 5px;
+    text-decoration: none;
+    color: black;
+}
+.filter:hover{
+    cursor: pointer;
+    color: blue;
+}
+.margin3h{
+    margin: 0 3rem;
+}
+.btnWhite{
+    background-color: white;
+    border: solid 1px gray;
+    border-radius: 12px;
+    padding: .3rem 1rem;
+    margin: .5rem;
+}
+.btnWhite:hover{
+    background-color: gainsboro;
+}
+.btnRed{
+    background-color: red;
+    border: solid 1px gray;
+    border-radius: 12px;
+    padding: .3rem 1rem;
+    margin: .5rem;
+    font-weight: 600;
+}
+.btnRed:hover{
+    background-color: rgb(131, 0, 0);
+}
+.pinkBox{
+    background-color: pink;
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    border: solid 1px gray;
+    margin: 2rem;
+}
+.pinkInput{
+    background-color: rgba(238, 54, 85, 0.09);
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    margin: .5rem;
+    padding: .5rem;
+}
