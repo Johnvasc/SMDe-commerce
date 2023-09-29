@@ -2,6 +2,7 @@ import Navbar from "./Components/Navbar"
 import Products from "./Components/Products"
 import Footer from "./Components/Footer"
 import Slider from "./Components/Slider"
+import Categories from "./Components/Categories"
 
 export default function Home() {
   const img = ['https://picsum.photos/1200/400', 'https://picsum.photos/1200/401', 'https://picsum.photos/1200/402']
@@ -12,6 +13,7 @@ export default function Home() {
         <Navbar></Navbar>
         <Slider images={img} texts={text}></Slider>
         <Products></Products>
+        <Categories></Categories>
         <Footer></Footer>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </main>    

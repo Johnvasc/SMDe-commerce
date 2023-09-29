@@ -21,8 +21,8 @@
     color: white;
 }
 .slideArrow{
-    font-size: 45px !important;
-    color: white !important;
+    font-size: 45px;
+    color: white;
     padding: .6rem .3rem;
     -webkit-text-stroke: 1px black;
     margin: 0 1rem;
@@ -30,4 +30,23 @@
 .slideArrow:hover{
     cursor: pointer;
     background-color: rgba(128, 128, 128, 0.575);
+}
+#categorySlider{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#categorySlider .slideArrow{
+    color: black;
+}
+.categoryItem{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+}
+.categoryPic{
+    width: 75%;
+    border-radius: 50%;
 }
