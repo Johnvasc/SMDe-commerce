@@ -35,6 +35,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 #categorySlider .slideArrow{
     color: black;
@@ -47,6 +49,6 @@
     padding: 3rem 2rem;
 }
 .categoryPic{
-    width: 75%;
+    width: 14rem;
     border-radius: 50%;
 }
