@@ -23,10 +23,7 @@ export default function page(){
                 const tokenPackage = await response.json();
                 console.log(tokenPackage)
                 localStorage.setItem("userToken", tokenPackage.token);
-                console.log(localStorage.getItem("userToken"))
             }
-
-            
         }catch(error){
             console.error('Erro:', error);
         }

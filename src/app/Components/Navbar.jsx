@@ -9,13 +9,10 @@ import { BsPerson } from "react-icons/bs"
 import { useEffect, useState } from "react"
 
 function Navbar(){
-    var isToken
+    var isToken = true
     const [loginWindow, setWindow] = useState(false)
     return(
-        <nav onLoad={()=>{
-            if(localStorage.getItem("userToken")==null) isToken = false
-            else isToken = true            
-        }}>
+        <nav>
             <Link href="/">
                 <h2>SMDe-commerce</h2>
             </Link>
@@ -33,9 +30,9 @@ function Navbar(){
             <button className='mallButton' onClick={()=>setWindow(!loginWindow)}>
                 <BsPerson className='navIcon'/>
             </button>
-            {loginWindow && !isToken && (
+            {!localStorage.getItem('userToken') && loginWindow && (
                 <div id='loginWindow'>
-                    <p>Tem um conta?</p>
+                    <p>Tem uma conta? Faça login!</p>
                     <Link href='/signin'>
                         <button onClick={()=>window.location.href = '/signin'}>Faça login!</button>
                     </Link>
@@ -46,13 +43,13 @@ function Navbar(){
                     
                 </div>
             )}
-            {loginWindow && isToken && (
+            {localStorage.getItem('userToken') && loginWindow && (
                 <div id='loginWindow'>
-                    <Link href='/signin'>
-                        <button onClick={()=>window.location.href = '/profile'}>Meu Perfil</button>
+                    <Link href='/profile'>
+                        <button>Meu perfil</button>
                     </Link>
-                    <Link href='/signup'>
-                        <button onClick={()=>window.location.href = '/signup'}>Sair</button>
+                    <Link href='/'>
+                        <button onClick={()=>{localStorage.removeItem("userToken");}}>Fazer Logoff</button>
                     </Link>
                 </div>
             )}
