@@ -24,6 +24,7 @@
     align-items: center;
 }
 .productPlusMinus input{
+    outline: none;
     border: none;
     width: 10%;
     text-align: center;

@@ -46,6 +46,8 @@ nav button:hover{
 #loginWindow{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 10%;
     padding: .5rem;
     background-color: #07101362;

@@ -12,6 +12,31 @@ export default function page(){
     const [pass, setPassword] = useState('')
     const [confirmPass, setConfirmPass] = useState('')
     const [errorMessege, setErrorMessege] = useState('')
+
+    async function Signup(){
+
+        const data = {name: nome, email: email, login: username,  password: pass, address: `${cidade} - rua: ${rua}, ${numero}`}
+        console.log(data)
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+        try{
+            const response = await fetch('http://localhost:8080/signup', options)
+            const data = await response.json();
+            console.log(data.msg)
+            if(response.status===200) window.location.href = '/'
+        }catch(error){
+            console.error('Erro:', error);
+        }
+
+    }
+
+
+
     function validateForm(campo){
         if(campo.length < 4 || campo.length > 20){
             setErrorMessege(`verifique os campos de indentificação!`)
@@ -61,7 +86,7 @@ export default function page(){
                         if(!validateForm(nome) || !validateForm(username) || !validateForm(email)) return false
                         if(!validateForm(cidade) || !validateForm(rua) || !validateForm(numero)) return false
                         if(!validatePass(pass, confirmPass)) return false
-                        setErrorMessege('deu certo!')
+                        Signup()
 
                     }}>Cadastrar</button>
                 </div>

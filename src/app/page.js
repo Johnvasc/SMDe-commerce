@@ -19,6 +19,9 @@ export default function Home() {
   },{
     image: "https://picsum.photos/403/403",
     title: "Livros"
+  },{
+    image: "https://picsum.photos/404/404",
+    title: "Jogos"
   }]
   return (
     <>
