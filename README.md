@@ -1,8 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#SMDe-commerce:
 
-## Getting Started
+## Iniciando o projeto:
 
-First, run the development server:
+Para roda o projeto execute:
 
 ```bash
 npm run dev
@@ -14,21 +14,33 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+O esquema de banco de dados pode ser visto abaixo:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Untitled (1)](https://github.com/Johnvasc/SMDe-commerce/assets/39773960/67725c81-b618-47eb-b309-ce1377ab86b0)
 
-## Learn More
+Execute os comandos SQL para criar alguns elementos úteis:
 
-To learn more about Next.js, take a look at the following resources:
+```
+CREATE TABLE users(
+  ID PRIMARY KEY,
+  Name varchar,
+  Login varchar,  
+  Email varchar,
+  Address varchar,
+  Password varchar,
+  Administrator boolean,
+  Created_at date
+)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+INSERT INTO users
+VALUES (1, 'Admin', 'Admin', 'Admin@email.com', 'Rua xyz', 'admin123', false, '2023-10-15')
+```
+obs: as colunas começam com letras maiúsculas, assim na hora de fazer uma pesquisa, seu nome deve vir entre aspas:
+Não funciona: SELECT Name FROM users
+Sim, funcion: SELECT "Name" FROM users
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## API:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+A API do projeto deve ser iniciada em outra instancia usando o comando `node server.js`
