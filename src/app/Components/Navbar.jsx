@@ -34,11 +34,11 @@ function Navbar(){
                 <div id='loginWindow'>
                     <p>Tem uma conta? Faça login!</p>
                     <Link href='/signin'>
-                        <button onClick={()=>window.location.href = '/signin'}>Faça login!</button>
+                        <button>Faça login!</button>
                     </Link>
                     <p>Ainda não tem uma conta?</p>
                     <Link href='/signup'>
-                        <button onClick={()=>window.location.href = '/signup'}>Cadastre-se!</button>
+                        <button>Cadastre-se!</button>
                     </Link>
                     
                 </div>

@@ -3,6 +3,7 @@ import "../Styles/Pages.css"
 import "../Styles/Dashboard.Modules.css"
 import UpDownButton from "../Components/UpDownButton"
 import {BsFilter} from "react-icons/bs"
+import {BsFillXCircleFill} from "react-icons/bs"
 import {BsSortAlphaDownAlt} from "react-icons/bs"
 import {BsSortAlphaDown} from "react-icons/bs"
 import { useState } from "react"
@@ -61,9 +62,64 @@ const totalSales = [{
 
 export default function page(){
     const [filterStatus, setFilter] = useState(false)
+    const [insertItem, setInsert] = useState(0)
     return(
         <section className="padding3h">
             <AdminNav value = "prof_button"/>
+            <h2>Adicionar itens:</h2>
+            <div className="line centralize">
+                <button className="btnWhite" onClick={()=>setInsert(1)}>Novo Produto</button>
+                <button className="btnWhite" onClick={()=>setInsert(2)}>Nova Categoria</button>
+                <button className="btnWhite" onClick={()=>setInsert(3)}>Nova Promoção</button>
+            </div>
+            {insertItem==1 &&(
+                <div>
+                    <div className="line">
+                        <h3>Inserir Produto:</h3>
+                        <BsFillXCircleFill onClick={()=>{setInsert(0)}} className="filter"/>
+                    </div>
+
+                    <div className="line">
+                        <input type="text" placeholder="Nome do Produto"/>
+                        <input type="number" placeholder="Preço"/>
+                        <input type="number" placeholder="Qtd em Estoque"/>
+                        <input type="text" placeholder="Link da imagem"/>
+                        <button className="btnWhite">Adicionar</button>
+                    </div>
+                </div>
+            )
+            }
+            {insertItem==2 &&(
+                <div>
+                    <div className="line">
+                        <h3>Inserir Categoria:</h3>
+                        <BsFillXCircleFill onClick={()=>{setInsert(0)}} className="filter" />
+                    </div>
+                    <div className="line">
+                        <input type="text" placeholder="Nome da categoria"/>
+                        <input type="text" placeholder="Link da imagem"/>
+                        <button className="btnWhite">Adicionar</button>
+                    </div>
+                </div>
+            )
+            }           
+            {insertItem==3 &&(
+                <div>
+                    <div className="line">
+                        <h3>Inserir Promoção:</h3>
+                        <BsFillXCircleFill onClick={()=>{setInsert(0)}} className="filter" />
+                    </div>
+                    <div className="line">
+                        <input type="text" placeholder="Nome do Produto"/>
+                        <input type="date" placeholder="Inicio"/>
+                        <input type="date" placeholder="Fim"/>
+                        <p>Promoção sazonal:</p>
+                        <input type="checkbox" name="" id="" /> 
+                        <button className="btnWhite">Adicionar</button>
+                    </div>
+                </div>
+            )
+            }           
             <h2>Produtos em estoque:</h2>
             <div className="line centralize">
                 { filterStatus && (<BsSortAlphaDown className="filter" onClick={()=>setFilter(false)}/>)
