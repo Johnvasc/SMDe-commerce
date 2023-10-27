@@ -33,6 +33,11 @@ button:hover{
     align-items: center;
     justify-content: space-evenly;
 }
+.lineBetween{
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
 .lineLeft{
     display: flex;
     align-items: center;
@@ -50,6 +55,9 @@ button:hover{
 }
 .margin3h{
     margin: 0 3rem;
+}
+.margin3v{
+    margin: 3rem 0;
 }
 .btnWhite{
     background-color: white;
@@ -72,6 +80,17 @@ button:hover{
 .btnRed:hover{
     background-color: rgb(131, 0, 0);
 }
+.btnYellow{
+    background-color: yellow;
+    border: solid 1px gray;
+    border-radius: 12px;
+    padding: .3rem 1rem;
+    margin: .5rem;
+    font-weight: 600;
+}
+.btnRed:hover{
+    background-color: rgb(139, 139, 0)
+}
 .pinkBox{
     background-color: pink;
     padding: 3rem 2rem;
@@ -86,4 +105,13 @@ button:hover{
     outline: none;
     margin: .5rem;
     padding: .5rem;
+}
+
+.imgLittle{
+    max-height: 4rem;
+    max-width: 4rem;
+}
+.imgMid{
+    max-height: 9rem;
+    max-width: 9rem;
 }

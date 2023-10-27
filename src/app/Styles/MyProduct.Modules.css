@@ -1,0 +1,5 @@
+#divImageProd{
+    transform-origin: 0px 0px;
+    transform: scale(1) translate(0px 0px);
+    cursor: grab;
+}

@@ -11,8 +11,8 @@ export default function Categories({categories}){
             <div id="categorySlider">
                 {categories.map((category)=>(
                     <div className="categoryItem">
-                        <img src={category.image} alt="" className="categoryPic"/>
-                        <h3>{category.title}</h3>
+                        <img src={category.Image} alt="" className="categoryPic"/>
+                        <h3>{category.Name}</h3>
                     </div>
                 ))}
            </div>

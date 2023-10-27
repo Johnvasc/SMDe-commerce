@@ -63,7 +63,87 @@ const totalSales = [{
 export default function page(){
     const [filterStatus, setFilter] = useState(false)
     const [insertItem, setInsert] = useState(0)
+    ///useStaes de Produto
+    const [nomeProduto, setNomeProd] = useState('')
+    const [precoProduto, setPrecoProd] = useState('')
+    const [qtdeProduto, setQtdeProd] = useState('')
+    const [descricaoProduto, setDescProd] = useState('')
+    const [categoriaProduto, setCatProd] = useState('')
+    const [urlProduto, setUrlProd] = useState('')
+    ///useStates de Categoria
+    const [urlCategoria, setUrlCat] = useState('')
+    const [nomeCategoria, setNomeCat] = useState('')
+    ///useStates de Promocao
+    const [nomePromocao, setNomePromo] = useState('')
+    const [urlPromocao, setUrlPromo] = useState('')
+    const [descricaoPromocao, setDescPromo] = useState('')
+    const [iniPromocao, setIniPromo] = useState('')
+    const [fimPromocao, setFimPromo] = useState('')
+    const [repPromocao, setRepPromo] = useState(false)
+
+
+    async function newProduct(){
+        const data = {name: nomeProduto, category: categoriaProduto, description: descricaoProduto, imageUrl: urlProduto, qtdeStock: qtdeProduto, price: precoProduto}
+        console.log(data)
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+        try{
+            const response = await fetch('http://localhost:8080/newProduct', options)
+            const data = await response.json();
+            console.log(data.msg)
+            if(response.status===200) window.location.href = '/dashboard'
+        }catch(error){
+            console.error('Erro:', error);
+        }
+
+    }
+    async function newCategory(){
+        const data = {name: nomeCategoria, imageUrl: urlCategoria}
+        console.log(data)
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+        try{
+            const response = await fetch('http://localhost:8080/newCategory', options)
+            const data = await response.json();
+            console.log(data.msg)
+            if(response.status===200) window.location.href = '/dashboard'
+        }catch(error){
+            console.error('Erro:', error);
+        }
+
+    }
+    async function newPromotion(){
+        const data = {name: nomePromocao, imageUrl: urlPromocao, repeat: repPromocao, beggining: iniPromocao, closure: fimPromocao, description: descricaoPromocao, name: nomePromocao}
+        console.log(data)
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+        try{
+            const response = await fetch('http://localhost:8080/newPromotion', options)
+            const data = await response.json();
+            console.log(data.msg)
+            if(response.status===200) window.location.href = '/dashboard'
+        }catch(error){
+            console.error('Erro:', error);
+        }
+
+    }
     return(
+
         <section className="padding3h">
             <AdminNav value = "prof_button"/>
             <h2>Adicionar itens:</h2>
@@ -80,11 +160,13 @@ export default function page(){
                     </div>
 
                     <div className="line">
-                        <input type="text" placeholder="Nome do Produto"/>
-                        <input type="number" placeholder="Preço"/>
-                        <input type="number" placeholder="Qtd em Estoque"/>
-                        <input type="text" placeholder="Link da imagem"/>
-                        <button className="btnWhite">Adicionar</button>
+                        <input type="text" placeholder="Nome do Produto" value={nomeProduto} onChange={(e)=>{setNomeProd(e.target.value)}}/>
+                        <input type="number" placeholder="Preço" value={precoProduto} onChange={(e)=>{setPrecoProd(e.target.value)}}/>
+                        <input type="number" placeholder="nº da categoria" value={categoriaProduto} onChange={(e)=>{setCatProd(e.target.value)}}/>
+                        <input type="number" placeholder="Qtd em Estoque" value={qtdeProduto} onChange={(e)=>{setQtdeProd(e.target.value)}} />
+                        <input type="text" placeholder="Link da imagem" value={urlProduto} onChange={(e)=>{setUrlProd(e.target.value)}}/>
+                        <textarea name="" placeholder="descrição" id="" cols="30" rows="10" value={descricaoProduto} onChange={(e)=>{setDescProd(e.target.value)}}></textarea>
+                        <button className="btnWhite" onClick={()=>newProduct()}>Adicionar</button>
                     </div>
                 </div>
             )
@@ -96,9 +178,9 @@ export default function page(){
                         <BsFillXCircleFill onClick={()=>{setInsert(0)}} className="filter" />
                     </div>
                     <div className="line">
-                        <input type="text" placeholder="Nome da categoria"/>
-                        <input type="text" placeholder="Link da imagem"/>
-                        <button className="btnWhite">Adicionar</button>
+                        <input type="text" placeholder="Nome da categoria" value={nomeCategoria} onChange={(e)=>{setNomeCat(e.target.value)}}/>
+                        <input type="text" placeholder="Link da imagem" value={urlCategoria} onChange={(e)=>{setUrlCat(e.target.value)}}/>
+                        <button className="btnWhite" onClick={()=>newCategory()}>Adicionar</button>
                     </div>
                 </div>
             )
@@ -110,12 +192,16 @@ export default function page(){
                         <BsFillXCircleFill onClick={()=>{setInsert(0)}} className="filter" />
                     </div>
                     <div className="line">
-                        <input type="text" placeholder="Nome do Produto"/>
-                        <input type="date" placeholder="Inicio"/>
-                        <input type="date" placeholder="Fim"/>
+                        <input type="text" placeholder="Nome da promoção"  value={nomePromocao} onChange={(e)=>{setNomePromo(e.target.value)}}/>
+                        <input type="text" placeholder="Imagem" value={urlPromocao} onChange={(e)=>{setUrlPromo(e.target.value)}}/>
+                        <p>Início:</p>
+                        <input type="date" placeholder="formato aaaa-mm-dd"  value={iniPromocao} onChange={(e)=>{setIniPromo(e.target.value)}}/>
+                        <p>Fim:</p>
+                        <input type="date" placeholder="formato aaaa-mm-dd" value={fimPromocao} onChange={(e)=>{setFimPromo(e.target.value)}}/>
                         <p>Promoção sazonal:</p>
-                        <input type="checkbox" name="" id="" /> 
-                        <button className="btnWhite">Adicionar</button>
+                        <input type="checkbox" name="" id="" onClick={()=>setRepPromo(!repPromocao)}/>
+                        <textarea name="" id="" cols="30" rows="10" placeholder="texto da promoção!" value={descricaoPromocao} onChange={(e)=>{setDescPromo(e.target.value)}}></textarea>
+                        <button className="btnWhite" onClick={()=>newPromotion()}>Adicionar</button>
                     </div>
                 </div>
             )

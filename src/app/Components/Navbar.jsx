@@ -10,6 +10,7 @@ import { useEffect, useState } from "react"
 
 function Navbar(){
     var isToken = true
+    const [search, setSearch] = useState()
     const [loginWindow, setWindow] = useState(false)
     return(
         <nav>
@@ -17,10 +18,10 @@ function Navbar(){
                 <h2>SMDe-commerce</h2>
             </Link>
             <div>
-                <input type="text" name="" id=""></input>
-                <button>
+                <input type="text" name="" value={search} onChange={(e)=>{setSearch(e.target.value)}}></input>
+                <button onClick={()=>{window.location.href=`/search?search=${search}`}}>
                     <BsSearch className='navIcon'/>
-                </button>
+                </button>        
             </div>
             <button className="mallButton">
                 <Link href="/carrinho">
