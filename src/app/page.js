@@ -50,7 +50,6 @@ export default function Home() {
     }
   }
   async function getPromos(){
-    console.log('dinossauro!')
     const options = {
       method: 'POST',
       headers: {
@@ -61,7 +60,6 @@ export default function Home() {
       const res = await fetch('http://localhost:8080/getPromotions', options)
       if(res.status==200){
         const resp = await res.json()
-        console.log(resp)
         setPromotions(resp.res.rows)
       }
     }catch (error){

@@ -1,6 +1,7 @@
 "use client"
 import "../Styles/Pages.css"
 import "../Styles/Dashboard.Modules.css"
+import "../Scripts/script.js"
 import UpDownButton from "../Components/UpDownButton"
 import {BsFilter} from "react-icons/bs"
 import {BsFillXCircleFill} from "react-icons/bs"
@@ -9,55 +10,7 @@ import {BsSortAlphaDown} from "react-icons/bs"
 import { useState } from "react"
 import AdminNav from "../Components/AdminNav"
 
-const outOfStock = [
-    {
-        stockId: 33,
-        sDescription: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia inventore, rem nesciunt delectus quidem quo?",
-        sPrice: "125.50"
-    },
-    {
-        stockId: 25,
-        sDescription: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, perspiciatis!",
-        sPrice: "90.15"
-    }
-]
-const sales = [
-    {
-        image: "https://picsum.photos/100/101",
-        name: "produto A",
-        id: 122,
-        totalSales: 14,
-        price: "25.90",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur mollitia, sapiente voluptatum voluptas perferendis eaque minus exercitationem numquam. Inventore quia earum consequuntur laboriosam cum quas?",
-        quantity: 3
-    },
-    {
-        image: "https://picsum.photos/101/100",
-        name: "produto B",
-        id: 142,
-        totalSales: 3,
-        price: "29.90",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur mollitia, sapiente voluptatum voluptas perferendis eaque minus exercitationem numquam. Inventore quia earum consequuntur laboriosam cum quas?",
-        quantity: 5
-    },
-]
 
-const purchases = [{
-    name: 'john vasconcelos',
-    id: 124,
-    totalPurc: 5
-},
-{
-    name: 'will vasconcelos',
-    id: 2526,
-    totalPurc: 12
-}
-]
-
-const totalSales = [{
-    date: "10/09/2023",
-    valueSale: "27.90"
-}]
 
 
 export default function page(){
@@ -80,7 +33,6 @@ export default function page(){
     const [iniPromocao, setIniPromo] = useState('')
     const [fimPromocao, setFimPromo] = useState('')
     const [repPromocao, setRepPromo] = useState(false)
-
 
     async function newProduct(){
         const data = {name: nomeProduto, category: categoriaProduto, description: descricaoProduto, imageUrl: urlProduto, qtdeStock: qtdeProduto, price: precoProduto}

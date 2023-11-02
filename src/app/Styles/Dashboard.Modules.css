@@ -40,3 +40,15 @@ h3{
     border-bottom: solid 1px rgba(0, 0, 0, 0.26);
     outline: none;
 }
+.descriptionFields{
+    display: flex;
+    align-items: center;
+    width: 60%;
+    margin-top: 1.5rem;
+}
+.editionField{
+    padding: .5rem;
+    border: solid 1px saddlebrown;
+    border-radius: 0 0 12px 12px;
+    border-top: none;
+}
