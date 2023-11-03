@@ -22,7 +22,8 @@ export default function page(){
             if(response.status===200){
                 const tokenPackage = await response.json();
                 console.log(tokenPackage)
-                localStorage.setItem("userToken", tokenPackage.token);
+                localStorage.setItem("token", tokenPackage.token);
+                window.location.href = '/'
             }
         }catch(error){
             console.error('Erro:', error);

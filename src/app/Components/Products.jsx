@@ -15,7 +15,7 @@ export default function Products({products}){
                 <h2>Confira nossos produtos:</h2>
                 <div className='productInnerContainer'>
                 {products.map((product) => (
-                    <div className='productCard' key={product.id}>
+                    <div className='productCard' key={product.ID}>
                         <img src={product.Image} alt="" />
                         <div className='line'>
                             <h3>{product.Name}</h3>

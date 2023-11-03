@@ -15,6 +15,7 @@ import { useState, useEffect } from "react"
 
 
 export default function page(){
+    const token = localStorage.getItem('token')
     
     // Use States relacionados a promotions
     const [promotions, setPromotions] = useState()
@@ -36,7 +37,25 @@ export default function page(){
     const [imageCategorie, setImageCat] = useState()
 
     const [option, setOption] = useState(0)
-
+    
+    async function checkAuthorization(){
+        console.log(token)
+        const options = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+        }
+        try{
+            const response = await fetch('http://localhost:8080/checkAdmin', options)
+            console.log(response)
+            const data = await response.json();            
+            if(response.status!==200) window.location.href = '/'
+        }catch(error){
+            console.error('Erro:', error);
+        }        
+    }
 
     async function delCat(id){
         const data = {ID: id}
@@ -51,7 +70,7 @@ export default function page(){
             const res = await fetch('http://localhost:8080/delCategory', options)
             if(res.status==200){
                 const resp = await res.json()
-                window.redirect('/marketplace')
+                window.location.href = '/marketplace'
             }
         }catch (error){
             console.log(error)
@@ -70,7 +89,7 @@ export default function page(){
             const res = await fetch('http://localhost:8080/delProduct', options)
             if(res.status==200){
                 const resp = await res.json()
-                window.redirect('/marketplace')
+                window.location.href = '/marketplace'
             }
         }catch (error){
             console.log(error)
@@ -131,11 +150,12 @@ export default function page(){
         }
     }
     
-      useEffect(() => {
-          getPromos()
-          getProducts()
-          getCat()
-      }, []);
+    useEffect(() => {
+        checkAuthorization()
+        getPromos()
+        getProducts()
+        getCat()
+    }, []);
     return(
         <>
             <AdminNav value="rel_button"></AdminNav>
@@ -195,7 +215,7 @@ export default function page(){
                                         <label>Url da Imagem:</label>
                                         <input type="text" placeholder="Imagem da Categoria" value={imageCategorie} onChange={(e)=>setImageCat(e.target.value)}/>
                                     </div>
-                                    <button className="btnWhite" onClick={()=>updateCat(nameCategorie, imageCategorie)}>Enviar dados</button>
+                                    <button className="btnWhite" onClick={()=>updateCat(nameCategorie, imageCategorie, category.ID)}>Enviar dados</button>
                                 </div>
                             )}
                         </div>
@@ -241,11 +261,15 @@ export default function page(){
                                         </div>
                                     </div>
                                     <div className="line">
+                                        <div>
+                                            <label>Imagem:</label>
+                                            <input type="text" placeholder="Url" value={imageProduct} onChange={(e)=>setImageProd(e.target.value)} />
+                                        </div>
                                         <div className="descriptionFields">
                                             <label>Descrição:</label>
                                             <textarea rows='9' cols='70' value={descriptionProduct} onChange={(e)=>setDescriptionProd(e.target.value)}/>
                                         </div>
-                                        <button className="btnWhite" onClick={()=>updateProd(nameProduct, imageProduct, priceProduct, stockProduct, categoryProduct, descriptionProduct)}>Enviar alterações</button> 
+                                        <button className="btnWhite" onClick={()=>updateProd(nameProduct, imageProduct, priceProduct, stockProduct, categoryProduct, descriptionProduct, item.ID)}>Enviar alterações</button> 
                                     </div>                                 
                                 </div>
                             )}

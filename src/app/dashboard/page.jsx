@@ -14,9 +14,16 @@ import AdminNav from "../Components/AdminNav"
 
 
 export default function page(){
+    const token = localStorage.getItem('userToken')
+
+    const [InOfStock, setIn] = useState()
+    const [outOfStock, setOut] = useState()
+    const [salesByDate, setSalesDate] = useState()
+    const [salesByClient, setSalesClient] = useState()
+
     const [filterStatus, setFilter] = useState(false)
     const [insertItem, setInsert] = useState(0)
-    ///useStaes de Produto
+    ///useStates de Produto
     const [nomeProduto, setNomeProd] = useState('')
     const [precoProduto, setPrecoProd] = useState('')
     const [qtdeProduto, setQtdeProd] = useState('')
@@ -40,7 +47,8 @@ export default function page(){
         const options = {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify(data)
         }
@@ -48,7 +56,7 @@ export default function page(){
             const response = await fetch('http://localhost:8080/newProduct', options)
             const data = await response.json();
             console.log(data.msg)
-            if(response.status===200) window.location.href = '/dashboard'
+            if(response.status===201) window.location.href = '/dashboard'
         }catch(error){
             console.error('Erro:', error);
         }
@@ -60,7 +68,8 @@ export default function page(){
         const options = {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify(data)
         }
@@ -68,7 +77,7 @@ export default function page(){
             const response = await fetch('http://localhost:8080/newCategory', options)
             const data = await response.json();
             console.log(data.msg)
-            if(response.status===200) window.location.href = '/dashboard'
+            if(response.status===201) window.location.href = '/dashboard'
         }catch(error){
             console.error('Erro:', error);
         }
@@ -80,7 +89,8 @@ export default function page(){
         const options = {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify(data)
         }
@@ -88,12 +98,32 @@ export default function page(){
             const response = await fetch('http://localhost:8080/newPromotion', options)
             const data = await response.json();
             console.log(data.msg)
-            if(response.status===200) window.location.href = '/dashboard'
+            if(response.status===201) window.location.href = '/dashboard'
         }catch(error){
             console.error('Erro:', error);
         }
 
     }
+    async function getOutOfStock(){
+        const options = {
+            method: 'POST',
+            headers: {
+                'CcheckAuthorizationontent-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        try{
+            const response = await fetch('http://localhost:8080/outOfStock', options)
+            const data = await response.json();
+            if(response.status===200) console.log(data.msg)
+        }catch(error){
+            console.error('Erro:', error);
+        }
+
+    }
+    useEffect(() => {
+        getOutOfStock()
+    }, []);
     return(
 
         <section className="padding3h">

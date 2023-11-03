@@ -10,7 +10,7 @@ export default function Categories({categories}){
             <h2>Busque por categoria:</h2>
             <div id="categorySlider">
                 {categories.map((category)=>(
-                    <div className="categoryItem">
+                    <div key={category.ID} className="categoryItem">
                         <img src={category.Image} alt="" className="categoryPic"/>
                         <h3>{category.Name}</h3>
                     </div>
