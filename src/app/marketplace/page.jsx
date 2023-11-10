@@ -17,6 +17,14 @@ import { useState, useEffect } from "react"
 export default function page(){
     const token = localStorage.getItem('token')
     
+    // Use States relacionados ao usuário
+    const [user, setUser] = useState()
+    const [userName, setUserName] = useState()
+    const [userUsername, setUserUsername] = useState()
+    const [userEmail, setUserEmail] = useState()
+    const [userPass, setUserPass] = useState()
+    const [userError, setUserError] = useState()
+
     // Use States relacionados a promotions
     const [promotions, setPromotions] = useState()
     
@@ -39,7 +47,6 @@ export default function page(){
     const [option, setOption] = useState(0)
     
     async function checkAuthorization(){
-        console.log(token)
         const options = {
             method: 'GET',
             headers: {
@@ -49,7 +56,6 @@ export default function page(){
         }
         try{
             const response = await fetch('http://localhost:8080/checkAdmin', options)
-            console.log(response)
             const data = await response.json();            
             if(response.status!==200) window.location.href = '/'
         }catch(error){
@@ -62,7 +68,8 @@ export default function page(){
         const options = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -81,7 +88,8 @@ export default function page(){
         const options = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -92,6 +100,49 @@ export default function page(){
                 window.location.href = '/marketplace'
             }
         }catch (error){
+            console.log(error)
+        }
+    }
+    async function delUser(){
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        try{
+            const res = await fetch('http://localhost:8080/delUser', options)
+            if(res.status==200){
+                const resp = await res.json()
+                window.location.href = '/marketplace'
+            }
+        }catch (error){
+            console.log(error)
+        }
+    }
+    async function updUser(){
+        const data = {name: userName, login: userUsername, email: userEmail, password: userPass, ID: user}
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+
+        }
+        try{
+            const res = await fetch('http://localhost:8080/updAdm', options)
+            if(res.status==200){
+                const resp = await res.json()
+                window.location.href = '/marketplace'
+            }
+            else{
+                const resp = await res.json()
+                setUserError(resp.msg)
+            }
+        }catch(error){
             console.log(error)
         }
     }
@@ -149,9 +200,32 @@ export default function page(){
           console.log(error)
         }
     }
+    async function getUser(){
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+        try{
+          const res = await fetch('http://localhost:8080/getAdm', options)
+          if(res.status==200){
+            const resp = await res.json()
+            setUser(resp.res.rows[0].ID)
+            setUserName(resp.res.rows[0].Name)
+            setUserUsername(resp.res.rows[0].Login)
+            setUserEmail(resp.res.rows[0].Email)
+            setUserPass(resp.res.rows[0].Password)
+          }
+        }catch (error){
+          console.log(error)
+        }
+    }
     
     useEffect(() => {
         checkAuthorization()
+        getUser()
         getPromos()
         getProducts()
         getCat()
@@ -179,15 +253,20 @@ export default function page(){
                     </button>
                 </div>
             </div>
-            {option==1 && (
+            {option==1 && user && (
                 <div className="centralizeCol">
                     <div className="pinkBox centralizeCol">
-                        <input className="pinkInput" type="text" placeholder="nome" />
-                        <input className="pinkInput" type="text" placeholder="username" />
-                        <input className="pinkInput" type="text" placeholder="email" />
-                        <input className="pinkInput" type="password" placeholder="password" />
-                        <button className="btnWhite">Salvar alterações</button>
-                        <button className="btnRed">Apagar conta</button>
+                        <input className="pinkInput" type="text" placeholder="nome" value={userName} onChange={(e)=>{setUserName(e.target.value)}}/>
+                        <input className="pinkInput" type="text" placeholder="username" value={userUsername} onChange={(e)=>{setUserUsername(e.target.value)}}/>
+                        <input className="pinkInput" type="text" placeholder="email" value={userEmail} onChange={(e)=>{setUserEmail(e.target.value)}}/>
+                        <input className="pinkInput" type="password" placeholder="password" value={userPass} onChange={(e)=>{setUserPass(e.target.value)}}/>
+                        <button className="btnWhite" onClick={()=>{updUser()}}>Salvar alterações</button>
+                        <button className="btnRed" onClick={()=>{delUser()}}>Apagar conta</button>
+                        {userError && (
+                            <div>
+                                <p>{userError}</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

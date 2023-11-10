@@ -7,14 +7,14 @@ import {BsFilter} from "react-icons/bs"
 import {BsFillXCircleFill} from "react-icons/bs"
 import {BsSortAlphaDownAlt} from "react-icons/bs"
 import {BsSortAlphaDown} from "react-icons/bs"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import AdminNav from "../Components/AdminNav"
 
 
 
 
 export default function page(){
-    const token = localStorage.getItem('userToken')
+    const token = localStorage.getItem('token')
 
     const [InOfStock, setIn] = useState()
     const [outOfStock, setOut] = useState()
@@ -40,7 +40,26 @@ export default function page(){
     const [iniPromocao, setIniPromo] = useState('')
     const [fimPromocao, setFimPromo] = useState('')
     const [repPromocao, setRepPromo] = useState(false)
+    ///UseStates de arrays de exibicao
+    const [productsInStock, setProductsInStock] = useState()
+    const [productsOutOfStock, setProductsOutStock] = useState()
 
+    async function checkAuthorization(){
+        const options = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+        }
+        try{
+            const response = await fetch('http://localhost:8080/checkAdmin', options)
+            const data = await response.json();            
+            if(response.status!==200) window.location.href = '/'
+        }catch(error){
+            console.error('Erro:', error);
+        }        
+    }
     async function newProduct(){
         const data = {name: nomeProduto, category: categoriaProduto, description: descricaoProduto, imageUrl: urlProduto, qtdeStock: qtdeProduto, price: precoProduto}
         console.log(data)
@@ -104,25 +123,37 @@ export default function page(){
         }
 
     }
-    async function getOutOfStock(){
+    async function getProducts(){
         const options = {
-            method: 'POST',
-            headers: {
-                'CcheckAuthorizationontent-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+            
+          }
         }
         try{
-            const response = await fetch('http://localhost:8080/outOfStock', options)
-            const data = await response.json();
-            if(response.status===200) console.log(data.msg)
-        }catch(error){
-            console.error('Erro:', error);
+          const res = await fetch('http://localhost:8080/getProducts', options)
+          if(res.status==200){
+            const resp = await res.json()
+            console.log(resp.res.rows)
+            const products = resp.res.rows
+            var inStock = []
+            var outStock = []
+            for(let i=0; i<products.length; i++){
+                if(products[i].qtde_Stock > 0) inStock.push(products[i])
+                else outStock.push(products[i])
+            }
+            console.log(outStock)
+            setProductsInStock(inStock)
+            setProductsOutStock(outStock)
+          }
+        }catch (error){
+          console.log(error)
         }
-
     }
     useEffect(() => {
-        getOutOfStock()
+        checkAuthorization()
+        getProducts()
     }, []);
     return(
 
@@ -196,20 +227,22 @@ export default function page(){
                 }
                 <h3>Ordenar alfabeticamente</h3>
             </div>
-            <div className="productsDashboard">
-                {sales.map((product)=>(
-                    <div className="line productItem centralize">
-                        <img src={product.image} alt=""/>
-                        <h3>{product.name}</h3>
-                        <h3>id: {product.id}</h3>
-                        <h3>vendas: {product.totalSales}</h3>
-                        <h3>R$ {product.price}</h3>
-                        <p>{product.description}</p>
-                        <h3>qtde: {product.quantity}</h3>
-                    </div>
-                ))
-                }
-            </div>
+            { productsInStock && (
+                <div className="productsDashboard">
+                    {productsInStock.map((product)=>(
+                        <div key={product.ID} className="line productItem centralize">
+                            <img src={product.Image} className="imgLittle" alt=""/>
+                            <h3>{product.Name}</h3>
+                            <h3>id: {product.ID}</h3>
+                            <h3>vendas: {product.Price}</h3>
+                            <h3>R$ {product.Price}</h3>
+                            <h3>qtde: {product.qtde_Stock}</h3>
+                        </div>
+                        ))
+                    }
+                </div>
+            )}
+
             <h2>Compras por clientes:</h2>
             <div className="line centralize">
                 <UpDownButton/>
@@ -217,38 +250,28 @@ export default function page(){
             </div>
             
             <div id="purchases" className="productsDashboard">
-                {purchases.map((client)=>(
-                    <div className="line productItem centralize">
-                        <h3>nome: {client.name}</h3>
-                        <h3>id: {client.id}</h3>
-                        <h3>total de compras: {client.totalPurc}</h3>
-                    </div>
-                ))}
+
             </div>
             <h2>Itens fora de estoque:</h2>
-            <div id="outOfStock" className="productsDashboard">
-                {outOfStock.map((item)=>{
-                    <div className="line productItem centralize">
-                        <h3>id: {item.stockId}</h3>
-                        <h3>descrição: {item.sDescription}</h3>
-                        <h3>preço: {item.sPrice} R$</h3>
-                    </div>
-                })
-
-                }
-            </div>
+            {productsOutOfStock && (
+                <div id="outOfStock" className="productsDashboard">
+                    {productsOutOfStock.map((item)=>(
+                        <div key={item.ID} className="line productItem centralize">
+                            <img src={item.Image} className="imgLittle" />
+                            <h3>id: {item.ID}</h3>
+                            <h3>preço: {item.Price} R$</h3>
+                        </div>
+                    ))
+                    }
+                </div>
+            )}
             <h2>Compras nos últimos dias:</h2>
             <div className="line centralize">
                 <UpDownButton/>
                 <h3>Ordenar dia</h3>
             </div>
             <div className="productsDashboard">
-                {totalSales.map((saleday)=>{
-                    <div className="line productItem centralize">
-                        <h3>{saleday.date}</h3>
-                        <h3>{saleday.valueSale}</h3>
-                    </div>
-                })}
+
             </div>
         </section>
     )

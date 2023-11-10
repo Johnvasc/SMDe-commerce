@@ -6,7 +6,7 @@ import "../Styles/Dashboard.Modules.css"
 import "../Styles/Pages.css"
 import {BsGear} from "react-icons/bs"
 import {BsCheckLg} from "react-icons/bs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 const sales = [{
@@ -26,7 +26,41 @@ const sales = [{
 ]
 
 export default function page(){
-    
+    const token = localStorage.getItem('token')
+
+    const [user, setUser] = useState()
+    const [userName, setUserName] = useState()
+    const [userLogin, setUserLogin] = useState()
+    const [userEmail, setUserEmail] = useState()
+    const [userPass, setUserPass] = useState()
+
+    async function getUser(){
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+        try{
+          const res = await fetch('http://localhost:8080/getUser', options)
+          if(res.status==200){
+            const resp = await res.json()
+            setUser(resp.res.rows[0].ID)
+            setUserName(resp.res.rows[0].Name)
+            setUserUsername(resp.res.rows[0].Login)
+            setUserEmail(resp.res.rows[0].Email)
+            setUserPass(resp.res.rows[0].Password)
+          }
+        }catch (error){
+          console.log(error)
+        }
+    }
+
+    useEffect(()=>{
+        getUser()
+    },[])
+
     const [userTable, setTable] = useState(false)
     return(
         <>
@@ -37,9 +71,11 @@ export default function page(){
                         <h3>Meu perfil</h3>
                         <div>
                             <h4>Nome:</h4>
-                            <p>John</p>
+                            <p>{userName}</p>
                             <h4>Username:</h4>
-                            <p>Johnvasc1998</p>
+                            <p>{userLogin}</p>
+                            <h4>Email:</h4>
+                            <p>{userEmail}</p>
                             <h4>Senha:</h4>
                             <p>************</p>
                         </div>
@@ -51,11 +87,13 @@ export default function page(){
                         <h3>Editar Perfil</h3>
                         <div>
                             <h4>Nome:</h4>
-                            <input type="text" />
+                            <input type="text" value={userName} onChange={(e)=>{setUserName(e.target.value)}}/>
                             <h4>Username:</h4>
-                            <input type="text" />
+                            <input type="text" value={userLogin} onChange={(e)=>{setUserLogin(e.target.value)}}/>
+                            <h4>Email:</h4>
+                            <input type="text" value={userEmail} onChange={(e)=>{setUserEmail(e.target.value)}}/>
                             <h4>Senha:</h4>
-                            <input type="password" name="" id="" />
+                            <input type="password" value={userPass} onChange={(e)=>{setUserPass(e.target.value)}}/>
                         </div>
                         <BsCheckLg className="filter" onClick={()=>setTable(false)}/>
                     </div>

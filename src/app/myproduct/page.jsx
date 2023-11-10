@@ -3,19 +3,45 @@ import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import '../Styles/Pages.css'
 import '../Styles/MyProduct.Modules.css'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 export default function myproduct(){
-    var scale = 1, panning = false, pointX = 0, pointY = 0, start = {x: 0, y: 0}
-    function zoom(){
-        const zoom = document.getElementById('productImage')
-        zoom.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`
-        
-    }
+    var itensQueue = []
+    const userToken = localStorage.getItem('token')
+    var cartToken = cartToken = JSON.parse(localStorage.getItem('cartToken')) || [];
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get('product')
 
+    async function sendToCart(){
+        if(!userToken){
+            cartToken.push(id)
+            console.log(cartToken)
+            localStorage.setItem('cartToken', JSON.stringify(cartToken))
+            window.location.href = '/carrinho'
+        }
+        else{
+            let product = {product: id}
+            console.log(product.product)
+            const options = {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${userToken}`
+                },
+                body: JSON.stringify(product)
+            }
+            try{
+                const res = await fetch('http://localhost:8080/updCart', options)
+                if(res.status==200){
+                    window.location.href = '/carrinho'
+                }
+            }catch(err){
+                console.log(err)
+            }
+        }
+    }
     async function catchProduct(){
-        const params = new URLSearchParams(window.location.search)
-        const id = params.get('product')
+
         const data = {id: id}
         const options = {
             method: 'POST',
@@ -64,11 +90,10 @@ export default function myproduct(){
                     <p id='productDescription'>descricao do produto</p>
                     <div>
                         <h3 id='productPrice'>0.00 R$</h3>
-                        <button className='btnYellow'>Adicionar ao carrinho</button>
+                        <button className='btnYellow' onClick={()=>sendToCart()} >Adicionar ao carrinho</button>
                     </div>
                 </div>
             </section>
-               
             
             <Footer></Footer>
         </>

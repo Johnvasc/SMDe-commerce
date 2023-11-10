@@ -21,7 +21,7 @@ export default function ProductOnCart({name, qtde, image, price}){
     return(
         <div className='productInterface'>
             <div>
-                <img src={image} alt="" />
+                <img className='imgLittle' src={image} alt="" />
                 <h3>{name}</h3>
             </div>
             <div>
