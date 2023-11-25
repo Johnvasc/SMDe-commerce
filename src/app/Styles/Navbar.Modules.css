@@ -1,4 +1,4 @@
-nav{
+#super-nav{
     background-color: #071013;
     color: white;
     padding: 1rem 3rem;
@@ -6,33 +6,33 @@ nav{
     align-items: center;
     justify-content: space-around;
 }
-nav a{
+#super-nav a{
     text-decoration: none;
     color: white;
 }
-nav h2{
+#super-nav h2{
     font-family: 'Ephesis', cursive;
     
 }
-nav h2:hover{
+#super-nav h2:hover{
     cursor: pointer;
 }
 nav div{
     display: flex;
     width: 60%;
 }
-nav input{
+#super-nav input{
     width: 80%;
     padding: .8rem 2rem;
     border-radius: 12px 0 0 12px;
     border: none;
     outline: none;
 }
-nav button{
+#super-nav button{
     border-radius: 0 12px 12px 0;
     border: none;
 }
-nav button:hover{
+#super-nav button:hover{
     cursor: pointer;
 }
 .mallButton{
@@ -58,6 +58,26 @@ nav button:hover{
     z-index: 99;
 }
 #loginWindow button{
+    padding: .8rem .2rem;
+    border-radius: 4px;
+}
+
+
+#loginAdmWindow{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    padding: .5rem;
+    background-color: #07101362;
+    position: absolute;
+    left: 82%;
+    top: 15%;
+    font-size: 12px;
+    z-index: 99;
+}
+#loginAdmWindow button{
     padding: .8rem .2rem;
     border-radius: 4px;
 }

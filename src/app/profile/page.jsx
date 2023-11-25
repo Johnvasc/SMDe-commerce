@@ -8,31 +8,17 @@ import {BsGear} from "react-icons/bs"
 import {BsCheckLg} from "react-icons/bs"
 import { useEffect, useState } from "react"
 
-
-const sales = [{
-        image: "https://picsum.photos/100/101",
-        title: "produto A",
-        price: "125.50",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus laboriosam nemo sit autem veniam sunt a ullam iure inventore soluta consequatur molestias odio impedit corrupti maxime nulla deserunt, est necessitatibus.",
-        date: "12/12/2022"
-    },
-    {
-        image: "https://picsum.photos/101/101",
-        title: "produto B",
-        price: "98.50",
-        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus laboriosam nemo sit autem veniam sunt a ullam iure inventore soluta consequatur molestias odio impedit corrupti maxime nulla deserunt, est necessitatibus.",
-        date: "13/01/2023"
-    },
-]
-
 export default function page(){
     const token = localStorage.getItem('token')
 
     const [user, setUser] = useState()
     const [userName, setUserName] = useState()
+    const [userPass, setUserPass] = useState()
     const [userLogin, setUserLogin] = useState()
     const [userEmail, setUserEmail] = useState()
-    const [userPass, setUserPass] = useState()
+    const [userProds, setUserProducts] = useState()
+    const [products, setProducts] = useState()
+    var sales
 
     async function getUser(){
         const options = {
@@ -48,7 +34,7 @@ export default function page(){
             const resp = await res.json()
             setUser(resp.res.rows[0].ID)
             setUserName(resp.res.rows[0].Name)
-            setUserUsername(resp.res.rows[0].Login)
+            setUserLogin(resp.res.rows[0].Login)
             setUserEmail(resp.res.rows[0].Email)
             setUserPass(resp.res.rows[0].Password)
           }
@@ -56,16 +42,65 @@ export default function page(){
           console.log(error)
         }
     }
+    async function getSales(){
+        const options = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+        }
+        try{
+            const res = await fetch('http://localhost:8080/catchSales', options)
+            if(res.status==200){
+                const resp = await res.json()
+                sales = resp.res.rows[0].Products
+                ///console.log(sales.length)
+            }
+        }catch (error){
+            console.log(error)
+        }
+    }
+    async function getProducts(){
+        const options = {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        }
+        try{
+            const res = await fetch('http://localhost:8080/getProducts', options)
+            if(res.status==200){
+                const resp = await res.json()
+                var listProducts = resp.res.rows
+            }
+        }catch (error){
+            console.log(error)
+        }
+        let products = []
+        for(let i=0; i<sales.length; i++){
+            for(let j=0; j<listProducts.length; j++){
+                if(listProducts[j].ID == sales[i]){
+                    products.push(listProducts[j])
+                    continue
+                }
+            }
+        }
+        console.log(products)
+        setProducts(products)
+    }
 
     useEffect(()=>{
         getUser()
+        getSales()
+        getProducts()
     },[])
 
     const [userTable, setTable] = useState(false)
     return(
         <>
             <Navbar></Navbar>
-            <section className="line">
+            <section className="lineUp">
                 {!userTable && (
                     <div className="userTable">
                         <h3>Meu perfil</h3>
@@ -106,15 +141,17 @@ export default function page(){
                             <UpDownButton/>
                         </div>
                     </div>
-                    {sales.map((item)=>(
-                        <div className="line productItem centralize">
-                            <img src={item.image} alt="" />
-                            <h3>{item.date}</h3>
-                            <h4>{item.title}</h4>
-                            <p>{item.description}</p>
-                            <div className="line"><h2 className="priceTitle">{item.price}</h2>R$</div>
-                        </div>
-                    ))}
+                    {products && (
+                        products.map((item)=>(
+                            <div key={item.ID} className="line productItem centralize">
+                                <img className="imgLittle" src={item.Image} alt="" />
+                                <h3>{item.Date}</h3>
+                                <h4>{item.Title}</h4>
+                                <div className="line"><h2 className="priceTitle">{item.Price}</h2>R$</div>
+                            </div>
+                        ))
+                    )}
+
                 </section>
             </section>
 

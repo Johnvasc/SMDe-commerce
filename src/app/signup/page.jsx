@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react"
 import "../Styles/Signup.Modules.css"
+import Link from 'next/link'
 
 export default function page(){
     const [nome, setNome] = useState('')
@@ -93,6 +94,7 @@ export default function page(){
                 <div id="errorField">
                     <p>{errorMessege}</p>
                 </div>
+                <Link href="/">Voltar</Link>
             </div>
         </section>
     )

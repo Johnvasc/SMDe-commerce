@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 
 
 function page(){
+    const cartToken = localStorage.getItem('cartToken')
     const userToken = localStorage.getItem('token')
     var useToken = false
     const [products, setProducts] = useState()
@@ -44,6 +45,8 @@ function page(){
                     const resp = await res.json()
                     cart = resp.res.rows
                     console.log(cart)
+                    cart = cart[0].Products
+                    console.log(cart)
                 }
             }catch(error){
                 console.log(error)
@@ -51,19 +54,19 @@ function page(){
         }else{
             useToken = false
             cart = localStorage.getItem('cartToken')
+            if(cart.length > 0) cart = JSON.parse(cart)
+            console.log(cart)
         }
         let products = []
         for(let i=0; i<listProducts.length; i++){
-            if(cart[0].Products.includes(listProducts[i].ID)){
+            if(cart.includes(listProducts[i].ID)){
                 products.push(listProducts[i])
             }
         }
-        console.log(listProducts)
-        console.log(products)
         setProducts(products)
     }
     async function makeSale(){
-        if(!useToken){
+        if(!userToken){
             window.location.href = '/signin'
             return
         }
@@ -83,6 +86,7 @@ function page(){
             console.log(error)
         }
     }
+    
     useEffect(()=>{
         getProducts()
     },[])
@@ -95,7 +99,7 @@ function page(){
                 {products && (
                     <section>
                         {products.map((product)=>(
-                            <ProductOnCart key={product.ID} name={product.Name} image={product.Image} price={product.Price}/>
+                            <ProductOnCart key={product.ID} name={product.Name} image={product.Image} price={product.Price} id={product.ID}/>
                         ))}
                     </section>
                 )}

@@ -8,7 +8,7 @@ import Link from 'next/link'
 export default function page(){
     const queryString = window.location.search
     const params = new URLSearchParams(queryString)
-    const search = params.get('search')
+    const search = localStorage.getItem('searchKey')
 
     var [results, setResults] = useState()
     async function getResults(){

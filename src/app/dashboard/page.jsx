@@ -10,9 +10,6 @@ import {BsSortAlphaDown} from "react-icons/bs"
 import { useState, useEffect } from "react"
 import AdminNav from "../Components/AdminNav"
 
-
-
-
 export default function page(){
     const token = localStorage.getItem('token')
 
@@ -20,6 +17,7 @@ export default function page(){
     const [outOfStock, setOut] = useState()
     const [salesByDate, setSalesDate] = useState()
     const [salesByClient, setSalesClient] = useState()
+    const [sales, setSales] = useState()
 
     const [filterStatus, setFilter] = useState(false)
     const [insertItem, setInsert] = useState(0)
@@ -33,6 +31,7 @@ export default function page(){
     ///useStates de Categoria
     const [urlCategoria, setUrlCat] = useState('')
     const [nomeCategoria, setNomeCat] = useState('')
+    const [categories, setCategories] = useState('')
     ///useStates de Promocao
     const [nomePromocao, setNomePromo] = useState('')
     const [urlPromocao, setUrlPromo] = useState('')
@@ -43,6 +42,7 @@ export default function page(){
     ///UseStates de arrays de exibicao
     const [productsInStock, setProductsInStock] = useState()
     const [productsOutOfStock, setProductsOutStock] = useState()
+
 
     async function checkAuthorization(){
         const options = {
@@ -74,7 +74,6 @@ export default function page(){
         try{
             const response = await fetch('http://localhost:8080/newProduct', options)
             const data = await response.json();
-            console.log(data.msg)
             if(response.status===201) window.location.href = '/dashboard'
         }catch(error){
             console.error('Erro:', error);
@@ -151,9 +150,69 @@ export default function page(){
           console.log(error)
         }
     }
+    async function getCat(){
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        try{
+            const res = await fetch('http://localhost:8080/getCategories', options)
+            if(res.status==200){
+                const resp = await res.json()
+                console.log(resp.res.rows)
+                setCategories(resp.res.rows)
+            }
+        }catch (error){
+            console.log(error)
+        }
+    }
+    async function getSales(){
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+        try{
+          const res = await fetch('http://localhost:8080/getSales', options)
+          if(res.status==200){
+            const resp = await res.json()
+            console.log(resp.res.rows)
+            const sales = resp.res.rows
+            setSales(sales)
+          }
+        }catch (error){
+          console.log(error)
+        }
+    }
+    async function delSale(id){
+        const data = {ID: id}
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        }
+        try{
+            const res = await fetch('http://localhost:8080/delSale', options)
+            if(res.status==200){
+                const resp = await res.json()
+                window.location.href = '/dashboard'
+            }
+        }catch (error){
+            console.log(error)
+        }
+    }
     useEffect(() => {
         checkAuthorization()
+        getCat()
         getProducts()
+        getSales()
     }, []);
     return(
 
@@ -175,7 +234,14 @@ export default function page(){
                     <div className="line">
                         <input type="text" placeholder="Nome do Produto" value={nomeProduto} onChange={(e)=>{setNomeProd(e.target.value)}}/>
                         <input type="number" placeholder="Preço" value={precoProduto} onChange={(e)=>{setPrecoProd(e.target.value)}}/>
-                        <input type="number" placeholder="nº da categoria" value={categoriaProduto} onChange={(e)=>{setCatProd(e.target.value)}}/>
+                        <select onChange={(e)=>{setCatProd(e.target.value)}}>
+                            <option value="-1">Selecione</option>
+                            {categories && (
+                                categories.map((category)=>(
+                                    <option key={category.ID} value={category.ID}>{category.Name}</option>
+                                ))
+                            )}
+                        </select>
                         <input type="number" placeholder="Qtd em Estoque" value={qtdeProduto} onChange={(e)=>{setQtdeProd(e.target.value)}} />
                         <input type="text" placeholder="Link da imagem" value={urlProduto} onChange={(e)=>{setUrlProd(e.target.value)}}/>
                         <textarea name="" placeholder="descrição" id="" cols="30" rows="10" value={descricaoProduto} onChange={(e)=>{setDescProd(e.target.value)}}></textarea>
@@ -233,10 +299,9 @@ export default function page(){
                         <div key={product.ID} className="line productItem centralize">
                             <img src={product.Image} className="imgLittle" alt=""/>
                             <h3>{product.Name}</h3>
-                            <h3>id: {product.ID}</h3>
-                            <h3>vendas: {product.Price}</h3>
+                            <h3>ID: {product.ID}</h3>
                             <h3>R$ {product.Price}</h3>
-                            <h3>qtde: {product.qtde_Stock}</h3>
+                            <h3>Qtde: {product.qtde_Stock}</h3>
                         </div>
                         ))
                     }
@@ -248,18 +313,27 @@ export default function page(){
                 <UpDownButton/>
                 <h3>Ordenar total de compras</h3>
             </div>
-            
-            <div id="purchases" className="productsDashboard">
-
-            </div>
+            {sales && (
+                <div id="purchases" className="productsDashboard">
+                    {sales.map((sale)=>(
+                        <div key={sale.ID} className="line productItem centralize">
+                            <h3>ID comprador: {sale.ID}</h3>
+                            <h3>Produtos: {sale.Products}</h3>
+                            <h3>Data: {sale.Date}</h3>
+                            <BsFillXCircleFill onClick={()=>{delSale(sale.ID)}} className="filter"/>
+                        </div>
+                    ))}
+                </div>
+            )}
             <h2>Itens fora de estoque:</h2>
             {productsOutOfStock && (
                 <div id="outOfStock" className="productsDashboard">
                     {productsOutOfStock.map((item)=>(
                         <div key={item.ID} className="line productItem centralize">
                             <img src={item.Image} className="imgLittle" />
-                            <h3>id: {item.ID}</h3>
-                            <h3>preço: {item.Price} R$</h3>
+                            <h3>{item.Name}</h3>
+                            <h3>ID: {item.ID}</h3>
+                            <h3>Preço: {item.Price} R$</h3>
                         </div>
                     ))
                     }

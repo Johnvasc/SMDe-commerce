@@ -10,12 +10,11 @@ export default function myproduct(){
     const userToken = localStorage.getItem('token')
     var cartToken = cartToken = JSON.parse(localStorage.getItem('cartToken')) || [];
     const params = new URLSearchParams(window.location.search)
-    const id = params.get('product')
+    const id = parseInt(localStorage.getItem('productExplain'))
 
     async function sendToCart(){
         if(!userToken){
             cartToken.push(id)
-            console.log(cartToken)
             localStorage.setItem('cartToken', JSON.stringify(cartToken))
             window.location.href = '/carrinho'
         }

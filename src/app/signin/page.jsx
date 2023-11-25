@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import "../Styles/Signup.Modules.css"
+import Link from 'next/link'
 
 
 export default function page(){
@@ -42,6 +43,7 @@ export default function page(){
                     setPassword(e.target.value)
                 }}/>
                 <button onClick={()=>{Signin()}}>Login</button>
+                <Link href="/">Voltar</Link>
             </section>
         </section>
     )

@@ -1,8 +1,8 @@
 "use client"
 import "../Styles/Pages.css"
 import "../Styles/Dashboard.Modules.css"
-import {updateCat} from "../Scripts/script.js"
-import {updateProd} from "../Scripts/script.js"
+///import {updateCat} from "../Scripts/script.js"
+///import {updateProd} from "../Scripts/script.js"
 import UpDownButton from "../Components/UpDownButton"
 import AdminNav from "../Components/AdminNav"
 import {BsPerson} from "react-icons/bs"
@@ -144,6 +144,47 @@ export default function page(){
             }
         }catch(error){
             console.log(error)
+        }
+    }
+    async function updateProd(name, image, price, stock, category, description, ID){
+        const data = { name, image, price, stock, category, description, ID}
+        const options = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(data)
+        }
+        console.log(data)
+        try{
+          const res = await fetch(`http://localhost:8080/updProduct`, options)
+          if(res.status==200){
+            console.log(res.msg)
+            window.location.href = '/marketplace'
+          }
+        }catch(err){
+          console.log(err)
+        }
+    }
+    async function updateCat(name, image, ID){
+        const data = {name: name, imgUrl: image, ID: ID}
+        const options = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(data)
+        }
+        try{
+          const res = await fetch(`http://localhost:8080/updCategory`, options)
+          if(res.status==200){
+            console.log(res.msg)
+            window.location.href = '/marketplace'
+          }
+        }catch(err){
+          console.log(err)
         }
     }
 
@@ -303,12 +344,19 @@ export default function page(){
             )}
             {option==3 && products && (
                 <div>
+                    <div className="columns5 productVisualization">
+                        <h5>Foto</h5>
+                        <h5>Titulo</h5>
+                        <h5>Categoria</h5>
+                        <h5>Editar</h5>
+                        <h5>Apagar</h5>
+                    </div>
                     {products.map((item)=>(
                         <div key={item.ID} className="prodContainer column">
-                            <div className="line column5 margin3v">
+                            <div className="columns5 margin3h productVisualization">
                                 <img src={item.Image} className="imgLittle"/>
                                 <h3>{item.Name}</h3>
-                                <h3>{item.ID}</h3>
+                                <h3>{item.Category}</h3>
                                 <BsPencilSquare className="filter" onClick={()=>{
                                     setNameProd(item.Name)
                                     setImageProd(item.Image)
@@ -332,9 +380,15 @@ export default function page(){
                                         </div>
                                         <div>
                                             <label>Categoria:</label>
-                                            <input type="number" placeholder="Categorie" value={categoryProduct} onChange={(e)=>setCatProd(e.target.value)}/>
+                                            <select onChange={(e)=>{setCatProd(e.target.value)}}>
+                                                <option value="-1">Selecione</option>
+                                                {categories && (
+                                                    categories.map((category)=>(
+                                                        <option key={category.ID} value={category.ID}>{category.Name}</option>
+                                                    )))}
+                                            </select>
                                         </div>
-                                        <div>
+                                       <div>
                                             <label>Estoque:</label>
                                             <input type="number" placeholder="Estoque" value={stockProduct} onChange={(e)=>setStockProd(e.target.value)}/>
                                         </div>

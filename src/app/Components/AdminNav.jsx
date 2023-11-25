@@ -3,6 +3,7 @@ import { useState } from "react"
 import {BsFileEarmarkSpreadsheet} from "react-icons/bs"
 import {BsPerson} from "react-icons/bs"
 import {BsDoorOpen} from "react-icons/bs"
+import { BsHouse } from "react-icons/bs";
 import Link from 'next/link';
 
 export default function AdminNav(props){
@@ -22,8 +23,14 @@ export default function AdminNav(props){
                             <BsPerson className="filter margin3h"/>
                         </Link>
                     )}
+                    <Link href='/'>
+                        <BsHouse className="filter margin3h"/>
+                    </Link>
                     <Link href="/">
-                        <BsDoorOpen className="filter margin3h" onClick={()=>{window.confirm("deseja efetuar logout?")}}/>    
+                        <BsDoorOpen className="filter margin3h" onClick={()=>{
+                            if(window.confirm("deseja efetuar logout?")){
+                                localStorage.removeItem("token")
+                            }}}/>
                     </Link>
   
                 </div>
