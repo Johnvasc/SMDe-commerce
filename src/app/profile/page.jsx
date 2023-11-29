@@ -18,7 +18,7 @@ export default function page(){
     const [userEmail, setUserEmail] = useState()
     const [userProds, setUserProducts] = useState()
     const [products, setProducts] = useState()
-    var sales
+    var sales = []
 
     async function getUser(){
         const options = {
@@ -54,8 +54,12 @@ export default function page(){
             const res = await fetch('http://localhost:8080/catchSales', options)
             if(res.status==200){
                 const resp = await res.json()
-                sales = resp.res.rows[0].Products
-                ///console.log(sales.length)
+                console.log(resp.res.rows.length)
+                for(let i = 0; i < resp.res.rows.length; i++){
+                    for(let j = 0; j < resp.res.rows[i].Products.length; j++){
+                        sales.push(resp.res.rows[i].Products[j])
+                    }
+                }
             }
         }catch (error){
             console.log(error)
@@ -78,16 +82,44 @@ export default function page(){
             console.log(error)
         }
         let products = []
-        for(let i=0; i<sales.length; i++){
-            for(let j=0; j<listProducts.length; j++){
-                if(listProducts[j].ID == sales[i]){
-                    products.push(listProducts[j])
-                    continue
+        if(sales){
+            for(let i=0; i<sales.length; i++){
+                for(let j=0; j<listProducts.length; j++){
+                    if(listProducts[j].ID == sales[i]){
+                        products.push(listProducts[j])
+                        continue
+                    }
                 }
             }
         }
+        console.log(sales)
         console.log(products)
         setProducts(products)
+    }
+    async function updUser(){
+        const data = {name: userName, login: userLogin, email: userEmail, password: userPass, ID: user}
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+
+        }
+        try{
+            const res = await fetch('http://localhost:8080/updUser', options)
+            if(res.status==200){
+                const resp = await res.json()
+                window.location.href = '/marketplace'
+            }
+            else{
+                const resp = await res.json()
+                setUserError(resp.msg)
+            }
+        }catch(error){
+            console.log(error)
+        }
     }
 
     useEffect(()=>{
@@ -130,7 +162,10 @@ export default function page(){
                             <h4>Senha:</h4>
                             <input type="password" value={userPass} onChange={(e)=>{setUserPass(e.target.value)}}/>
                         </div>
-                        <BsCheckLg className="filter" onClick={()=>setTable(false)}/>
+                        <BsCheckLg className="filter" onClick={()=>{
+                            updUser()
+                            setTable(false)
+                        }}/>
                     </div>
                 )}
                 <section className="padding3h">

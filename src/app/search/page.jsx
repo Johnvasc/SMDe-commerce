@@ -48,7 +48,7 @@ export default function page(){
                         </div>
                         <h3>{product.Name}</h3>
                         <h3>{product.Price} R$</h3>
-                        <Link href={`/myproduct?product=${product.ID}`} className="btnYellow">
+                        <Link onClick={()=>{localStorage.setItem('productExplain', `${product.ID}`)}} href={`/myproduct`} className="btnYellow">
                             ver produto
                         </Link>
                     </div>

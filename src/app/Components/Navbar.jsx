@@ -11,26 +11,6 @@ import { useEffect, useState } from "react"
 
 function Navbar(){
     const token = localStorage.getItem('token')
-
-    async function checkAuthorization(){
-        if(!token) return false
-        const options = {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-        }
-        try{
-            const response = await fetch('http://localhost:8080/checkInstanceAdm', options)
-            const data = await response.json();  
-            console.log(response)     
-            if(response.status==200) console.log('sla')
-        }catch(error){
-            return false
-        }        
-    }
-
     const [search, setSearch] = useState()
     const [loginWindow, setWindow] = useState(false)
     const [admLoginWindow, setAdmWindow] = useState(false)
@@ -55,7 +35,7 @@ function Navbar(){
                 </Link>
             </button>
 
-            {checkAuthorization() && localStorage.getItem('token') && (
+            {localStorage.getItem('token') && (
                 <button className='mallButton' onClick={()=>{
                     setAdmWindow(!admLoginWindow)
                     setWindow(false)}}>
@@ -81,7 +61,7 @@ function Navbar(){
                     </Link>
                 </div>
             )}
-            {checkAuthorization() && admLoginWindow && (
+            {admLoginWindow && (
                 <div id="loginAdmWindow">
                     <p>Acessar dados da conta ou produtos?</p>
                     <Link href='/marketplace'>

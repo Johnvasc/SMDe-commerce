@@ -318,7 +318,7 @@ export default function page(){
                     {sales.map((sale)=>(
                         <div key={sale.ID} className="line productItem centralize">
                             <h3>ID comprador: {sale.ID}</h3>
-                            <h3>Produtos: {sale.Products}</h3>
+                            <h3>Produtos: {JSON.stringify(sale.Products)}</h3>
                             <h3>Data: {sale.Date}</h3>
                             <BsFillXCircleFill onClick={()=>{delSale(sale.ID)}} className="filter"/>
                         </div>
