@@ -147,3 +147,17 @@ button:hover{
 .font13{
     font-size: 13px !important;
 }
+.ephesis{
+    font-family: 'Ephesis', cursive;
+    font-size: 25px;
+}
+.reportCard{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 12px;
+    border: solid .5px gray;
+    width: 80%;
+    margin: .4rem;
+    padding: 1rem;
+}
