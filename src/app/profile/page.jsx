@@ -19,6 +19,7 @@ export default function page(){
     const [userProds, setUserProducts] = useState()
     const [products, setProducts] = useState()
     var sales = []
+    var control = true
 
     async function getUser(){
         const options = {
@@ -54,12 +55,13 @@ export default function page(){
             const res = await fetch('http://localhost:8080/catchSales', options)
             if(res.status==200){
                 const resp = await res.json()
-                console.log(resp.res.rows.length)
+                if(!control) return ///variavel de controle para excecução de função duplicada do next em modo dev
                 for(let i = 0; i < resp.res.rows.length; i++){
                     for(let j = 0; j < resp.res.rows[i].Products.length; j++){
                         sales.push(resp.res.rows[i].Products[j])
                     }
                 }
+                control = false
             }
         }catch (error){
             console.log(error)
@@ -82,6 +84,7 @@ export default function page(){
             console.log(error)
         }
         let products = []
+        console.log(listProducts)
         if(sales){
             for(let i=0; i<sales.length; i++){
                 for(let j=0; j<listProducts.length; j++){
@@ -92,8 +95,6 @@ export default function page(){
                 }
             }
         }
-        console.log(sales)
-        console.log(products)
         setProducts(products)
     }
     async function updUser(){
@@ -119,6 +120,25 @@ export default function page(){
             }
         }catch(error){
             console.log(error)
+        }
+    }
+    async function deleteUser(){
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        try{
+            const res = await fetch('http://localhost:8080/delUser', options)
+            if(res.status==200){
+                localStorage.removeItem("token")
+                const resp = await res.json()
+                window.location.href = '/'
+            }
+        }catch(err){
+            console.log(err)
         }
     }
 
@@ -161,11 +181,13 @@ export default function page(){
                             <input type="text" value={userEmail} onChange={(e)=>{setUserEmail(e.target.value)}}/>
                             <h4>Senha:</h4>
                             <input type="password" value={userPass} onChange={(e)=>{setUserPass(e.target.value)}}/>
+                            <button className="btnRed font13" onClick={()=>{deleteUser()}}>deletar conta</button>
                         </div>
                         <BsCheckLg className="filter" onClick={()=>{
                             updUser()
                             setTable(false)
                         }}/>
+                        
                     </div>
                 )}
                 <section className="padding3h">

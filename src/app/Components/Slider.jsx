@@ -8,8 +8,8 @@ export default function Slider({promotions}){
     const [imageSrc, setSrc] = useState(promotions[0].Image)
     const [textSrc, setTSrc] = useState(promotions[0].description)
     const [titleSrc, setTitleSrc] = useState(promotions[0].Name)
-    const [iniSrc, setIniSrc] = useState(promotions[0].Beggining)
-    const [fimSrc, setFimSrc] = useState(promotions[0].Closure)
+    const [iniSrc, setIniSrc] = useState(promotions[0].Beggining.slice(0, 10))
+    const [fimSrc, setFimSrc] = useState(promotions[0].Closure.slice(0, 10))
     const [count, setCount] = useState(0)
     
     function setSliderContent(index, sliderSize){
@@ -20,8 +20,8 @@ export default function Slider({promotions}){
         setSrc(promotions[newCount].Image)
         setTSrc(promotions[newCount].description)
         setTitleSrc(promotions[newCount].Name)
-        setIniSrc(promotions[newCount].Beggining)
-        setFimSrc(promotions[newCount].Closure)
+        setIniSrc(promotions[newCount].Beggining.slice(0, 10))
+        setFimSrc(promotions[newCount].Closure.slice(0, 10))
     }
 
     return(

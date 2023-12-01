@@ -66,7 +66,7 @@ export default function page(){
     async function delCat(id){
         const data = {ID: id}
         const options = {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -86,7 +86,7 @@ export default function page(){
     async function delProd(id){
         const data = {ID: id}
         const options = {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -105,14 +105,14 @@ export default function page(){
     }
     async function delUser(){
         const options = {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         }
         try{
-            const res = await fetch('http://localhost:8080/delUser', options)
+            const res = await fetch('http://localhost:8080/delAdm', options)
             if(res.status==200){
                 const resp = await res.json()
                 window.location.href = '/marketplace'

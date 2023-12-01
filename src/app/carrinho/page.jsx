@@ -44,9 +44,7 @@ function page(){
                 if(res.status==200){
                     const resp = await res.json()
                     cart = resp.res.rows
-                    console.log(cart)
                     cart = cart[0].Products
-                    console.log(cart)
                 }
             }catch(error){
                 console.log(error)
@@ -58,9 +56,12 @@ function page(){
             console.log(cart)
         }
         let products = []
-        for(let i=0; i<listProducts.length; i++){
-            if(cart.includes(listProducts[i].ID)){
-                products.push(listProducts[i])
+        for(let i=0; i<cart.length; i++){
+            for(let j=0; j<listProducts.length; j++){
+                if(cart[i]==listProducts[j].ID){
+                    products.push(listProducts[j])
+                    continue
+                }
             }
         }
         setProducts(products)

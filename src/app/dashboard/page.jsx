@@ -183,6 +183,7 @@ export default function page(){
             console.log(resp.res.rows)
             const sales = resp.res.rows
             setSales(sales)
+            console.log(sales)
           }
         }catch (error){
           console.log(error)
@@ -319,8 +320,8 @@ export default function page(){
                         <div key={sale.ID} className="line productItem centralize">
                             <h3>ID comprador: {sale.ID}</h3>
                             <h3>Produtos: {JSON.stringify(sale.Products)}</h3>
-                            <h3>Data: {sale.Date}</h3>
-                            <BsFillXCircleFill onClick={()=>{delSale(sale.ID)}} className="filter"/>
+                            <h3>Data: {sale.Date.slice(0, 10)}</h3>
+                            <BsFillXCircleFill onClick={()=>{delSale(sale.SaleID)}} className="filter"/>
                         </div>
                     ))}
                 </div>
@@ -339,14 +340,6 @@ export default function page(){
                     }
                 </div>
             )}
-            <h2>Compras nos últimos dias:</h2>
-            <div className="line centralize">
-                <UpDownButton/>
-                <h3>Ordenar dia</h3>
-            </div>
-            <div className="productsDashboard">
-
-            </div>
         </section>
     )
 }
